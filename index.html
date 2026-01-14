@@ -183,33 +183,36 @@
 
 document.addEventListener('DOMContentLoaded', async () => {
   const progressBar = document.getElementById('main-progress-bar');
-  
-  // 1. Inicia o progresso visual
   if (progressBar) progressBar.style.width = '15%';
 
   try {
-    // 🚀 ALTERAÇÃO: Busca o arquivo JSON local na pasta dados em vez do Google Script
+    // 🚀 AJUSTE DE CAMINHO: Aponta para a pasta que vimos na sua foto
     const response = await fetch('./dados/cardapio.json');
+    
+    if (!response.ok) throw new Error('Arquivo não encontrado no servidor');
+    
     const res = await response.json();
 
     if (res.success) {
       const info = res.info;
       const data = res.menu;
 
-      // 2. Aplica as configurações da empresa (Seu código original mantido)
+      // Configurações visuais (Cores e WhatsApp)
       themeColor = info.siteColor || "#388e3c";
       companyWhatsApp = info.whatsappNumber || '';
       companyStatus = info.status || 'Aberto';
       
       document.getElementById('company-name').textContent = info.companyName;
-      const logo = document.getElementById('company-logo');
-      const loaderLogo = document.getElementById('loader-logo-img');
       if (info.logoUrl) {
-        logo.src = info.logoUrl; logo.style.display = 'block';
-        if (loaderLogo) { loaderLogo.src = info.logoUrl; loaderLogo.style.display = 'block'; }
+        document.getElementById('company-logo').src = info.logoUrl;
+        document.getElementById('company-logo').style.display = 'block';
+        if (document.getElementById('loader-logo-img')) {
+          document.getElementById('loader-logo-img').src = info.logoUrl;
+          document.getElementById('loader-logo-img').style.display = 'block';
+        }
       }
 
-      // 3. Aplica a Cor Dinâmica no CSS
+      // Aplica o tema dinâmico
       const style = document.createElement('style');
       style.textContent = `
         .section-title { border-color: ${themeColor}; color: ${themeColor}; }
@@ -223,10 +226,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         progressBar.style.width = '100%';
       }
 
-      // 4. Renderiza o Menu
       renderMenu(data);
 
-      // 5. Fecha o Loading suavemente
       setTimeout(() => {
         const overlay = document.getElementById('loading-overlay');
         if (overlay) {
@@ -236,11 +237,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       }, 600);
 
     } else {
-      notify("Erro ao processar dados do cardápio.");
+      notify("Erro: Os dados do cardápio estão incompletos.");
     }
   } catch (err) {
-    console.error("Erro ao carregar o arquivo JSON:", err);
-    notify("Erro de conexão: Verifique se o cardápio foi publicado.");
+    console.error("Erro técnico:", err);
+    notify("Sem conexão com o cardápio. Clique em 'Publicar' no Admin.");
   }
 
   setupUI();
