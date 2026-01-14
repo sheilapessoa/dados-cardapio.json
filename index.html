@@ -1,168 +1,163 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
   <base target="_top">
-  <title>Meu Menu Digital</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Cardápio Digital</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
   <style>
-    /* ===== Estilo Base ===== */
-    body { font-family: 'Roboto', sans-serif; margin: 0; padding: 20px; background-color: #f9f9f9; padding-bottom: 100px; }
-    h1 { text-align: center; color: #333; display: flex; flex-direction: column; align-items: center; gap: 10px; margin-top: 20px; }
-    .logo { height: 70px; width: auto; border-radius: 12px; }
-    .container { max-width: 800px; margin: auto; }
+    /* ===== VARIÁVEIS E BASE ===== */
+    :root { --primary-color: #388e3c; }
     
-    /* ===== Splash Screen ===== */
-    #loading-overlay {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background-color: #ffffff; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; z-index: 9999;
-      transition: opacity 0.5s ease;}
-    .loader-logo { width: 90px; height: auto; margin-bottom: 20px; animation: pulse 1.5s infinite; border-radius: 10px; }
-    .progress-container { 
-  width: 150px; height: 4px; background-color: #eee; 
-  border-radius: 10px; overflow: hidden; 
-}
-    .progress-bar { 
-  width: 0%; /* Começa em zero */
-  height: 100%; 
-  background-color: #ccc; /* Cinza apenas por milissegundos */
-  transition: width 0.6s ease, background-color 0.3s ease; 
-}
-    @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } }
-    @keyframes loadAnim { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+    body { 
+      font-family: 'Roboto', sans-serif; 
+      margin: 0; padding: 0; 
+      background-color: #f8f9fa; 
+      color: #333;
+      padding-bottom: 100px; /* Espaço para a barra flutuante */
+      -webkit-tap-highlight-color: transparent;
+    }
 
-   /* ===== Notificações na Parte Superior ===== */
-#toast-container { 
-  position: fixed; 
-  top: 70px;            /* Fica abaixo da barra de status que colocamos no topo */
-  left: 50%; 
-  transform: translateX(-50%); 
-  z-index: 10000; 
-  display: flex; 
-  flex-direction: column; 
-  gap: 10px; 
-  pointer-events: none; 
-}
+    .container { max-width: 600px; margin: auto; padding: 15px; }
 
-.toast { 
-  background: #333; 
-  color: white; 
-  padding: 10px 20px; 
-  border-radius: 50px; 
-  font-size: 0.85em; 
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
-  animation: slideDown 0.3s forwards; /* Mudamos o nome da animação */
-}
+    /* ===== CABEÇALHO ===== */
+    header {
+      background: #fff;
+      text-align: center;
+      padding: 40px 20px;
+      border-radius: 0 0 30px 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+    .logo { width: 90px; height: 90px; object-fit: cover; border-radius: 50%; border: 4px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1); margin-bottom: 10px; }
+    h1 { margin: 10px 0 5px; font-weight: 900; font-size: 1.5rem; }
 
-/* Nova animação vindo de cima */
-@keyframes slideDown { 
-  from { 
-    transform: translateY(-50px); /* Começa acima da tela */
-    opacity: 0; 
-  } 
-  to { 
-    transform: translateY(0); 
-    opacity: 1; 
-  } 
-}
-    /* ===== Categorias e Itens ===== */
-    .section-title { font-size: 1.1em; font-weight: bold; color: #388e3c; margin: 25px 0 12px; padding-left: 8px; border-left: 4px solid; text-transform: uppercase; }
-    .menu-item { background: #fff; border-radius: 15px; padding: 15px; margin-bottom: 12px; display: flex; align-items: flex-start; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-    .item-image { width: 80px; height: 80px; object-fit: cover; border-radius: 12px; margin-right: 15px; flex-shrink: 0; }
-    .item-details { flex-grow: 1; position: relative; }
-    .item-header-clickable { display: flex; justify-content: space-between; align-items: center; width: 100%; cursor: pointer; }
-    .item-name { font-weight: bold; font-size: 1em; color: #333; }
-    .toggle-icon { font-size: 0.9em; transition: transform 0.3s ease; color: #bbb; }
-    .item-description { color: #777; font-size: 0.85em; margin: 4px 0 8px; line-height: 1.3; padding-right: 10px; }
-    .item-price { font-weight: bold; color: #000; font-size: 1.05em; }
+    /* ===== BUSCA STICKY ===== */
+    .search-container { 
+      position: sticky; top: 15px; z-index: 900;
+      background: #fff; margin: -35px 20px 20px;
+      padding: 12px 20px; border-radius: 15px;
+      display: flex; align-items: center; gap: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      border: 1px solid #eee;
+    }
+    #search-input { border: none; outline: none; width: 100%; font-size: 16px; background: transparent; }
 
-    /* Opções e Botão Adicionar (Ajustado) */
-    .options-and-footer-container { display: none; margin-top: 15px; padding-top: 10px; border-top: 1px dashed #eee; }
-    .footer-action { display: flex; justify-content: flex-end; width: 100%; margin-top: 10px; }
-    
+    /* ===== MENU ITEMS ===== */
+    .section-title { 
+      font-size: 1.1rem; font-weight: 700; margin: 30px 0 15px; 
+      text-transform: uppercase; letter-spacing: 1px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-title::after { content: ""; height: 2px; background: #e0e0e0; flex-grow: 1; }
+
+    .menu-item { 
+      background: #fff; border-radius: 20px; padding: 12px; 
+      margin-bottom: 15px; display: flex; align-items: flex-start;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid #f0f0f0;
+    }
+    .item-image { width: 100px; height: 100px; object-fit: cover; border-radius: 15px; margin-right: 15px; }
+    .item-details { flex-grow: 1; }
+    .item-name { font-weight: 700; font-size: 1.05rem; display: block; margin-bottom: 4px; }
+    .item-description { color: #777; font-size: 0.85rem; line-height: 1.3; margin-bottom: 10px; }
+    .item-footer { display: flex; justify-content: space-between; align-items: center; }
+    .item-price { font-weight: 700; font-size: 1.1rem; color: #2ecc71; }
+
+    /* ===== BOTÕES ===== */
     .add-to-cart-btn { 
-      background-color: #388e3c; color: white; padding: 8px 18px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.9em;transition: opacity 0.2s;}
-    .add-to-cart-btn:active { opacity: 0.7; }
+      background: var(--primary-color); color: #fff; border: none; 
+      padding: 10px 20px; border-radius: 12px; font-weight: 700; 
+      cursor: pointer; font-size: 0.9rem; transition: transform 0.2s;
+    }
+    .add-to-cart-btn:active { transform: scale(0.95); }
 
-    .option-group h4 { margin: 10px 0 5px; font-size: 0.9em; color: #666; background: #f5f5f5; padding: 4px 10px; border-radius: 4px; }
-    .option-list-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; font-size: 0.9em; }
-    .quantity-controls { display: flex; align-items: center; gap: 8px; }
-    .quantity-controls button { border: none; color: white; width: 24px; height: 24px; border-radius: 6px; cursor: pointer; font-weight: bold; }
-    .quantity-controls input { width: 25px; text-align: center; border: none; background: transparent; font-weight: bold; font-size: 0.95em; }
-
-   /* ===== Carrinho flutuante (Lado Direito) ===== */
+    /* ===== CARRINHO FLUTUANTE (BOTTOM NAV) ===== */
     #cart-float {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  bottom: auto;
-  background: ;
-  color: white;
-  padding: 10px 15px;
-  border-radius: 50px;
-  cursor: pointer;
-  font-size: 1.2em;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.search-container { max-width: 800px; margin: 0 auto 15px; display: flex; align-items: center; gap: 10px; padding: 10px 18px; background: #fff; border-radius: 50px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border: 1px solid #eee; position: sticky; top: 10px; z-index: 900; }
-    #search-input { border: none; outline: none; background: transparent; width: 100%; font-size: 0.95em; }
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      width: 90%; max-width: 450px; height: 65px;
+      background: var(--primary-color); color: white;
+      border-radius: 20px; display: flex; justify-content: space-between;
+      align-items: center; padding: 0 25px; z-index: 1000;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2); cursor: pointer;
+    }
+    #cart-count { background: #fff; color: var(--primary-color); padding: 2px 10px; border-radius: 8px; font-weight: 900; margin-left: 8px; }
 
-    #cart-modal { display: none; position: fixed; z-index: 1001; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(2px); }
-    .cart-modal-content { background: #fff; margin: 15% auto; padding: 20px; width: 85%; max-width: 380px; border-radius: 15px; }
+    /* ===== MODAL DO CARRINHO ===== */
+    #cart-modal { display: none; position: fixed; bottom: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1001; }
+    .cart-modal-content { 
+      position: absolute; bottom: 0; width: 100%; background: #fff; 
+      border-radius: 30px 30px 0 0; padding: 25px; box-sizing: border-box; 
+      max-height: 80vh; overflow-y: auto;
+    }
+
+    /* ===== SPLASH SCREEN ===== */
+    #loading-overlay { position: fixed; inset: 0; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; transition: opacity 0.4s; }
+    .loader-logo { width: 80px; animation: pulse 1.5s infinite; border-radius: 15px; margin-bottom: 20px; }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+    
+    /* TOASTS */
+    #toast-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10002; }
+    .toast { background: #333; color: #fff; padding: 12px 25px; border-radius: 50px; margin-bottom: 10px; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
   </style>
 </head>
 <body>
 
   <div id="loading-overlay">
     <img id="loader-logo-img" class="loader-logo" src="" style="display:none;">
-    <div class="progress-container"><div class="progress-bar" id="main-progress-bar"></div></div>
-    <p style="margin-top:10px; color:#888; font-size: 0.8em;">Carregando...</p>
+    <div style="width: 150px; height: 4px; background: #eee; border-radius: 10px; overflow: hidden;">
+      <div id="main-progress-bar" style="width: 0%; height: 100%; background: var(--primary-color); transition: width 0.3s;"></div>
+    </div>
   </div>
+
   <div id="toast-container"></div>
 
-  <h1>
+  <header>
     <img id="company-logo" class="logo" style="display: none;" alt="Logo">
-    <span id="company-name"></span>
-  </h1>
-
-  <div id="status-message" style="text-align: center; font-weight: bold; margin-bottom: 10px; font-size: 0.9em;"></div>
+    <h1 id="company-name">Carregando...</h1>
+    <div id="status-message" style="font-size: 0.85rem; opacity: 0.7;"></div>
+  </header>
 
   <div class="search-container">
     <i class="fas fa-search" style="color: #ccc;"></i>
-    <input type="text" id="search-input" placeholder="Buscar no cardápio...">
+    <input type="text" id="search-input" placeholder="O que você procura?">
   </div>
 
   <div class="container">
     <div id="menu-content"></div>
   </div>
 
- <div id="cart-float">
-  <i class="fas fa-shopping-cart"></i>
-  <span></span>
-  <span id="cart-count">0</span>
-</div>
+  <div id="cart-float" style="display: none;">
+    <div style="display: flex; align-items: center;">
+      <i class="fas fa-shopping-bag fa-lg"></i>
+      <span style="margin-left: 12px; font-weight: 700;">Ver Sacola</span>
+      <span id="cart-count">0</span>
+    </div>
+    <span id="cart-total-float" style="font-weight: 700; font-size: 1.1rem;">R$ 0,00</span>
+  </div>
+
   <div id="cart-modal">
     <div class="cart-modal-content">
-      <span id="close-cart" style="float:right; cursor:pointer; font-size: 1.2em;">&times;</span>
-      <h3 style="margin-top:0">Meu Pedido</h3>
-      <div style="padding: 15px 15px 0 15px;">
-      <label style="display: block; font-weight: bold; font-size: 0.9em; margin-bottom: 5px;">Seu Nome:</label>
-      <input type="text" id="client-name" placeholder="Digite seu nome" 
-        style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;">
-    </div>
-      <div id="cart-items" style="max-height: 250px; overflow-y: auto;"></div>
-      <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
-      <div style="display:flex; justify-content:space-between; font-weight:bold;">
-        <span>Total:</span>
-        <span>R$ <span id="cart-total">0,00</span></span>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2 style="margin: 0;">Sua Sacola</h2>
+        <i class="fas fa-times-circle fa-2x" id="close-cart" style="color: #ccc; cursor: pointer;"></i>
       </div>
-      <button class="add-to-cart-btn" style="width: 100%; margin-top: 15px; padding: 12px;" onclick="finalizarPedido()">Finalizar no WhatsApp</button>
+      
+      <input type="text" id="client-name" placeholder="Seu nome" style="width: 100%; padding: 15px; border: 1px solid #eee; border-radius: 12px; margin-bottom: 15px; font-size: 16px;">
+      
+      <div id="cart-items" style="margin-bottom: 20px;"></div>
+      
+      <div style="display: flex; justify-content: space-between; font-weight: 900; font-size: 1.2rem; border-top: 2px solid #f4f4f4; padding-top: 15px;">
+        <span>Total</span>
+        <span id="cart-total">R$ 0,00</span>
+      </div>
+      
+      <button class="add-to-cart-btn" style="width: 100%; margin-top: 20px; padding: 18px; font-size: 1rem;" onclick="finalizarPedido()">
+        <i class="fab fa-whatsapp"></i> ENVIAR PEDIDO
+      </button>
     </div>
   </div>
 
@@ -175,258 +170,154 @@
     function notify(msg) {
       const container = document.getElementById('toast-container');
       const t = document.createElement('div');
-      t.className = 'toast';
-      t.textContent = msg;
+      t.className = 'toast'; t.textContent = msg;
       container.appendChild(t);
-      setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 500); }, 2000);
+      setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 500); }, 2500);
     }
 
-document.addEventListener('DOMContentLoaded', async () => {
-  const progressBar = document.getElementById('main-progress-bar');
-  if (progressBar) progressBar.style.width = '15%';
+    document.addEventListener('DOMContentLoaded', async () => {
+      const progressBar = document.getElementById('main-progress-bar');
+      progressBar.style.width = '30%';
 
-  try {
-    // 🚀 AJUSTE DE CAMINHO: Aponta para a pasta que vimos na sua foto
-    const response = await fetch('./dados/cardapio.json');
-    
-    if (!response.ok) throw new Error('Arquivo não encontrado no servidor');
-    
-    const res = await response.json();
+      try {
+        const response = await fetch('./dados/cardapio.json');
+        if (!response.ok) throw new Error();
+        const res = await response.json();
 
-    if (res.success) {
-      const info = res.info;
-      const data = res.menu;
+        if (res.success) {
+          const info = res.info;
+          const data = res.menu;
 
-      // Configurações visuais (Cores e WhatsApp)
-      themeColor = info.siteColor || "#388e3c";
-      companyWhatsApp = info.whatsappNumber || '';
-      companyStatus = info.status || 'Aberto';
-      
-      document.getElementById('company-name').textContent = info.companyName;
-      if (info.logoUrl) {
-        document.getElementById('company-logo').src = info.logoUrl;
-        document.getElementById('company-logo').style.display = 'block';
-        if (document.getElementById('loader-logo-img')) {
-          document.getElementById('loader-logo-img').src = info.logoUrl;
-          document.getElementById('loader-logo-img').style.display = 'block';
+          themeColor = info.siteColor || "#388e3c";
+          companyWhatsApp = info.whatsappNumber || '';
+          companyStatus = info.status || 'Aberto';
+          
+          document.documentElement.style.setProperty('--primary-color', themeColor);
+          document.getElementById('company-name').textContent = info.companyName;
+          document.getElementById('status-message').textContent = companyStatus === 'Aberto' ? '🟢 Aberto Agora' : '🔴 Fechado no momento';
+
+          if (info.logoUrl) {
+            document.getElementById('company-logo').src = info.logoUrl;
+            document.getElementById('company-logo').style.display = 'inline-block';
+            document.getElementById('loader-logo-img').src = info.logoUrl;
+            document.getElementById('loader-logo-img').style.display = 'block';
+          }
+
+          renderMenu(data);
+          progressBar.style.width = '100%';
+          setTimeout(() => {
+            document.getElementById('loading-overlay').style.opacity = '0';
+            setTimeout(() => document.getElementById('loading-overlay').style.display = 'none', 400);
+          }, 500);
         }
+      } catch (err) {
+        notify("Erro ao carregar cardápio.");
       }
-
-      // Aplica o tema dinâmico
-      const style = document.createElement('style');
-      style.textContent = `
-        .section-title { border-color: ${themeColor}; color: ${themeColor}; }
-        .add-to-cart-btn, #cart-float, .quantity-controls button { background-color: ${themeColor} !important; }
-        .item-name { color: ${themeColor}; }
-      `;
-      document.head.appendChild(style);
-      
-      if (progressBar) {
-        progressBar.style.backgroundColor = themeColor;
-        progressBar.style.width = '100%';
-      }
-
-      renderMenu(data);
-
-      setTimeout(() => {
-        const overlay = document.getElementById('loading-overlay');
-        if (overlay) {
-          overlay.style.opacity = '0';
-          setTimeout(() => overlay.style.display = 'none', 500);
-        }
-      }, 600);
-
-    } else {
-      notify("Erro: Os dados do cardápio estão incompletos.");
-    }
-  } catch (err) {
-    console.error("Erro técnico:", err);
-    notify("Sem conexão com o cardápio. Clique em 'Publicar' no Admin.");
-  }
-
-  setupUI();
-});
+      setupUI();
+    });
 
     function renderMenu(data) {
       const content = document.getElementById('menu-content');
       content.innerHTML = '';
-      let items = [
-        ...(data.optionsItems || []).map(i => ({...i, type:'complex'})),
-        ...(data.menuItems || []).map(i => ({...i, type:'simple'}))
-      ];
+      let items = [...(data.menuItems || []), ...(data.optionsItems || [])];
       let cats = {};
       items.forEach(i => {
-        const c = i.Categoria || 'Outros';
+        let c = i.Categoria || 'Destaques';
         if (!cats[c]) cats[c] = [];
         cats[c].push(i);
       });
+
       Object.keys(cats).sort().forEach(cat => {
         const title = document.createElement('div');
         title.className = 'section-title';
         title.textContent = cat;
         content.appendChild(title);
-        cats[cat].forEach(item => renderItem(item));
-      });
-      document.getElementById('loading-overlay').style.opacity = '0';
-      setTimeout(() => document.getElementById('loading-overlay').style.display = 'none', 500);
-    }
-
-    function renderItem(item) {
-      const content = document.getElementById('menu-content');
-      const div = document.createElement('div');
-      div.className = 'menu-item';
-      const img = item['Imagem'] || item['URL da Imagem'];
-      
-      div.innerHTML = `
-        ${img ? `<img src="${img}" class="item-image" loading="lazy">` : ''}
-        <div class="item-details">
-          <div class="item-header-clickable" onclick="toggle(this, ${item.type === 'complex'})">
-            <span class="item-name">${item.Nome}</span>
-            ${item.type === 'complex' ? '<i class="fas fa-chevron-down toggle-icon"></i>' : ''}
-          </div>
-          <div class="item-description">${item.Descrição || ''}</div>
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span class="item-price">R$ ${parseFloat(item.Valor).toFixed(2).replace('.', ',')}</span>
-            ${item.type === 'simple' ? `<button class="add-to-cart-btn" onclick="add(this, '${item.Nome}', ${item.Valor}, false)">Adicionar</button>` : ''}
-          </div>
-          <div class="options-and-footer-container">
-            ${item.type === 'complex' ? renderOptions(item) : ''}
-            <div class="footer-action">
-              <button class="add-to-cart-btn" onclick="add(this, '${item.Nome}', ${item.Valor}, true)">Adicionar</button>
-            </div>
-          </div>
-        </div>
-      `;
-      content.appendChild(div);
-    }
-
-    function renderOptions(item) {
-      let h = '';
-      for (let k in item) {
-        if (item[k]?.items) {
-          h += `<div class="option-group">
-            <h4>${k} (Até ${item[k].limit})</h4>
-            ${item[k].items.map(o => `
-              <div class="option-list-item">
-                <span>${o}</span>
-                <div class="quantity-controls">
-                  <button onclick="qty(this,-1)">-</button>
-                  <input type="number" value="0" data-opt="${o}" data-limit="${item[k].limit}" readonly>
-                  <button onclick="qty(this,1)">+</button>
-                </div>
+        cats[cat].forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'menu-item';
+          const img = item['Imagem'] || item['URL da Imagem'];
+          div.innerHTML = `
+            ${img ? `<img src="${img}" class="item-image" loading="lazy">` : ''}
+            <div class="item-details">
+              <span class="item-name">${item.Nome}</span>
+              <div class="item-description">${item.Descrição || ''}</div>
+              <div class="item-footer">
+                <span class="item-price">R$ ${parseFloat(item.Valor).toFixed(2).replace('.', ',')}</span>
+                <button class="add-to-cart-btn" onclick="addSimple('${item.Nome}', ${item.Valor})">
+                  <i class="fas fa-plus"></i>
+                </button>
               </div>
-            `).join('')}
-          </div>`;
-        }
-      }
-      return h;
-    }
-
-    function toggle(el, isComplex) {
-      if(!isComplex) return;
-      const box = el.parentElement.querySelector('.options-and-footer-container');
-      const icon = el.querySelector('.toggle-icon');
-      const open = box.style.display === 'block';
-      box.style.display = open ? 'none' : 'block';
-      icon.style.transform = open ? 'rotate(180deg)' : 'rotate(0deg)';
-    }
-
-    function qty(btn, d) {
-      const i = btn.parentElement.querySelector('input');
-      const group = i.closest('.option-group').querySelectorAll('input');
-      let t = 0; group.forEach(g => t += parseInt(g.value));
-      let cur = parseInt(i.value);
-      if(d > 0 && t < i.dataset.limit) i.value = cur + 1;
-      else if(d < 0 && cur > 0) i.value = cur - 1;
-      else if(d > 0) notify("Limite atingido!");
-    }
-
-    function add(btn, name, price, isComplex) {
-      if(companyStatus !== 'Aberto') return notify("Loja Fechada!");
-      let opts = [];
-      if(isComplex) {
-        btn.closest('.options-and-footer-container').querySelectorAll('input').forEach(i => {
-          if(parseInt(i.value) > 0) opts.push({name: i.dataset.opt, qty: i.value});
+            </div>
+          `;
+          content.appendChild(div);
         });
-        if(!opts.length) return notify("Escolha uma opção!");
-        btn.closest('.options-and-footer-container').querySelectorAll('input').forEach(i => i.value = 0);
-        toggle(btn.closest('.item-details').querySelector('.item-header-clickable'), true);
-      }
-      const key = name + JSON.stringify(opts);
-      const ex = cart.find(c => c.key === key);
-      if(ex) ex.qty++; else cart.push({key, name, price, opts, qty: 1});
+      });
+    }
+
+    function addSimple(name, price) {
+      if(companyStatus !== 'Aberto') return notify("Loja Fechada!");
+      const ex = cart.find(c => c.name === name);
+      if(ex) ex.qty++; else cart.push({name, price, qty: 1, opts: []});
       updateUI();
-      notify("Adicionado!");
+      notify("Adicionado à sacola!");
     }
 
     function updateUI() {
       const list = document.getElementById('cart-items');
-      let t = 0, c = 0; list.innerHTML = '';
+      let total = 0, count = 0;
+      list.innerHTML = '';
+      
       cart.forEach((item, idx) => {
-        t += item.price * item.qty; c += item.qty;
-        list.innerHTML += `<div style="padding:10px 0; border-bottom:1px solid #eee; font-size: 0.9em;">
-          <b>${item.qty}x ${item.name}</b> <span style="float:right">R$ ${(item.price*item.qty).toFixed(2)}</span>
-          <div style="font-size:0.85em; color:#888">${item.opts.map(o => o.qty+'x '+o.name).join(', ')}</div>
-          <button onclick="remove(${idx})" style="color:red; border:none; background:none; cursor:pointer; padding:0; font-size:0.85em">Remover</button>
-        </div>`;
+        total += item.price * item.qty;
+        count += item.qty;
+        list.innerHTML += `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <div>
+              <div style="font-weight: 700;">${item.qty}x ${item.name}</div>
+              <div style="font-size: 0.8rem; color: red; cursor: pointer;" onclick="remove(${idx})">Remover</div>
+            </div>
+            <div style="font-weight: 700;">R$ ${(item.price * item.qty).toFixed(2).replace('.', ',')}</div>
+          </div>
+        `;
       });
-      document.getElementById('cart-count').textContent = c;
-      document.getElementById('cart-total').textContent = t.toFixed(2).replace('.', ',');
+
+      document.getElementById('cart-count').textContent = count;
+      const totalTxt = 'R$ ' + total.toFixed(2).replace('.', ',');
+      document.getElementById('cart-total').textContent = totalTxt;
+      document.getElementById('cart-total-float').textContent = totalTxt;
+      document.getElementById('cart-float').style.display = count > 0 ? 'flex' : 'none';
     }
 
     function remove(i) {
       if(cart[i].qty > 1) cart[i].qty--; else cart.splice(i,1);
       updateUI();
     }
-function finalizarPedido() {
-  const nomeCliente = document.getElementById('client-name').value.trim();
-  
-  // Validações
-  if (companyStatus !== 'Aberto') return notify("Loja Fechada!");
-  if (!cart.length) return notify("Sacola vazia!");
-  if (!nomeCliente) return notify("Por favor, informe seu nome."); 
 
-  let mensagem = 'Olá, gostaria de fazer o pedido:%0A';
-  mensagem += `*Cliente:* ${nomeCliente}%0A`;
-  let totalGeral = 0;
+    function finalizarPedido() {
+      const nome = document.getElementById('client-name').value.trim();
+      if(!nome) return notify("Informe seu nome!");
+      if(!cart.length) return;
 
-  cart.forEach(item => {
-    const subTotal = item.price * item.qty;
-    totalGeral += subTotal;
-
-    // Item principal
-    mensagem += `%0A${item.qty}x ${item.name} - R$ ${subTotal.toFixed(2).replace('.', ',')}%0A`;
-
-    // Opcionais (um embaixo do outro)
-    if (item.opts && item.opts.length > 0) {
-      mensagem += item.opts.map(o => `• ${o.qty}x ${o.name}`).join('%0A') + '%0A';
+      let msg = `*PEDIDO: ${nome}*%0A%0A`;
+      let total = 0;
+      cart.forEach(item => {
+        msg += `${item.qty}x ${item.name} - R$ ${(item.price * item.qty).toFixed(2)}%0A`;
+        total += item.price * item.qty;
+      });
+      msg += `%0A*TOTAL: R$ ${total.toFixed(2)}*`;
+      window.open(`https://wa.me/${companyWhatsApp}?text=${msg}`, '_blank');
     }
-  });
-
-  // Total no final
-  mensagem += `%0A*Total do Pedido: R$ ${totalGeral.toFixed(2).replace('.', ',')}*`;
-
-  if (!companyWhatsApp) return notify("WhatsApp não configurado!");
-
-  window.open(`https://wa.me/${companyWhatsApp}?text=${mensagem}`, '_blank');
-
-  // Limpa o carrinho e fecha o modal
-  cart = [];
-  document.getElementById('client-name').value = '';
-  updateUI();
-  document.getElementById('cart-modal').style.display = 'none';
-  notify("Pedido enviado!");
-}
 
     function setupUI() {
       document.getElementById('cart-float').onclick = () => document.getElementById('cart-modal').style.display='block';
       document.getElementById('close-cart').onclick = () => document.getElementById('cart-modal').style.display='none';
       document.getElementById('search-input').oninput = (e) => {
         const v = e.target.value.toLowerCase();
-        document.querySelectorAll('.menu-item').forEach(i => i.style.display = i.innerText.toLowerCase().includes(v) ? 'flex' : 'none');
+        document.querySelectorAll('.menu-item').forEach(i => {
+          i.style.display = i.innerText.toLowerCase().includes(v) ? 'flex' : 'none';
+        });
       };
     }
-    
   </script>
 </body>
 </html>
