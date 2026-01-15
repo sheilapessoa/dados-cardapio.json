@@ -310,28 +310,52 @@
     z-index: 900;
   }
 }
-/* ===== DESKTOP: botão fechar no canto superior direito ===== */
+/* ===== DESKTOP: Carrinho estilo painel lateral ===== */
 @media (min-width: 601px) {
+
+  #cart-modal {
+    display: none;
+    justify-content: flex-end;
+    align-items: stretch;
+  }
+
+  #cart-modal[style*="block"] {
+    display: flex !important;
+  }
+
+  .cart-modal-content {
+    position: relative;
+    width: 420px;
+    max-width: 420px;
+    height: 100vh;
+    border-radius: 0;
+    animation: slideLeft 0.25s ease;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Remove o handle no desktop */
+  .drag-handle {
+    display: none;
+  }
+
+  @keyframes slideLeft {
+    from { transform: translateX(100%); }
+    to   { transform: translateX(0); }
+  }
+}
+@media (min-width: 601px) {
+
+  .cart-header {
+    position: relative;
+  }
 
   #close-cart {
     position: absolute;
-    top: 18px;
-    right: 18px;
+    top: 16px;
+    right: 16px;
     font-size: 1.6em;
-    color: #555;
-    z-index: 10;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-  }
-
-  #close-cart:hover {
-    transform: scale(1.1);
-    opacity: 0.7;
-  }
-
-  /* Ajusta o header para não empurrar conteúdo */
-  .cart-header {
-    position: relative;
-    padding-right: 50px;
+    cursor: pointer;
   }
 }
 </style>
