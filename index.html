@@ -344,47 +344,31 @@
     to   { transform: translateX(0); }
   }
 }
+/* ===== DESKTOP: X alinhado com "Meu Pedido" ===== */
 @media (min-width: 601px) {
 
   .cart-header {
-    position: relative;
-  }
-
-  #close-cart {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    font-size: 1.6em;
-    cursor: pointer;
-  }
-}
-/* ===== DESKTOP: Botão fechar fora do header ===== */
-@media (min-width: 601px) {
-
-  #close-cart {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    font-size: 1.8em;
-    color: #555;
-    cursor: pointer;
-    z-index: 1100;
-    background: #fff;
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
     display: flex;
     align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    justify-content: space-between;
+    padding: 16px 20px;
+  }
+
+  #close-cart {
+    font-size: 1.6em;
+    color: #e53935; /* 🔴 vermelho elegante */
+    cursor: pointer;
+    line-height: 1;
     transition: transform 0.2s ease, opacity 0.2s ease;
   }
 
   #close-cart:hover {
-    transform: scale(1.1);
-    opacity: 0.7;
+    transform: scale(1.15);
+    opacity: 0.8;
   }
 }
+
+
 
 </style>
 </head>
@@ -721,9 +705,7 @@ function finalizarPedido() {
       i.style.display = i.innerText.toLowerCase().includes(v) ? 'flex' : 'none'
     );
   };
-}
-
-    
+}   
   </script>
 </body>
 </html>
