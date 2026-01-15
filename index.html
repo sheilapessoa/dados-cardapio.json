@@ -471,7 +471,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   try {
     // 🚀 AJUSTE DE CAMINHO: Aponta para a pasta que vimos na sua foto
-    const response = await fetch('./dados/cardapio.json');
+   const response = await fetch('./dados/cardapio.json?v=' + Date.now());
     
     if (!response.ok) throw new Error('Arquivo não encontrado no servidor');
     
