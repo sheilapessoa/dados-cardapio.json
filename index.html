@@ -4,6 +4,8 @@
   <base target="_top">
   <title>Meu Menu Digital</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#388e3c">
 
 
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -374,7 +376,11 @@
   </div>
 </div>
 
-
+if ('serviceWorker' in navigator) {
+navigator.serviceWorker.register('/sw.js')
+.then(() => console.log('PWA ativo'))
+.catch(err => console.error('Erro PWA', err));
+}
   <script>
     let cart = [];
     let companyWhatsApp = '';
@@ -649,6 +655,6 @@ function finalizarPedido() {
 }
 
     
-  </script>
+</script>
 </body>
 </html>
