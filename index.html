@@ -168,7 +168,7 @@
 
   /* Cabeçalho fixo */
   .cart-header {
-    padding: 16px;
+    padding: 18px 20px;
     font-weight: bold;
     font-size: 1em;
     border-bottom: 1px solid #eee;
@@ -176,13 +176,14 @@
     justify-content: space-between;
     align-items: center;
     background: #fff;
+    margin-bottom: 10px;
   }
 
   /* Conteúdo com scroll */
   .cart-body {
     flex: 1;
     overflow-y: auto;
-    padding: 12px 16px;
+    padding:  0 20px 10px;
   }
 
   /* Rodapé fixo */
@@ -367,6 +368,18 @@
     opacity: 0.8;
   }
 }
+#client-name {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 0.9em;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+.cart-body label {
+  font-size: 0.85em;
+  margin-bottom: 4px;
+  display: block;
+}
 
 
 
@@ -404,31 +417,21 @@
 </div>
 <div id="cart-modal">
   <div class="cart-modal-content">
-
+f
     <div class="drag-handle"></div>
 
-    <div class="cart-header">
-      <span>Meu Pedido</span>
-      <span id="close-cart" style="cursor:pointer;font-size:1.3em;">&times;</span>
-    </div>
+<div class="cart-header">
+  <span>Meu Pedido</span>
+  <span id="close-cart">&times;</span>
+</div>
 
-    <div class="cart-body">
-      <label style="font-weight:bold;font-size:0.9em;">Seu Nome</label>
-      <input id="client-name" type="text" placeholder="Digite seu nome"
-        style="width:100%;margin:8px 0 15px;padding:12px;border:1px solid #ddd;border-radius:8px">
+<div class="cart-body">f
+  <label for="client-name">Seu Nome</label>
+  <input id="client-name" type="text" placeholder="Digite seu nome">
 
-      <div id="cart-items"></div>
-    </div>
+  <div id="cart-items"></div>
+</div>
 
-    <div class="cart-footer">
-      <div style="display:flex;justify-content:space-between;font-weight:bold;margin-bottom:10px;">
-        <span>Total</span>
-        <span>R$ <span id="cart-total">0,00</span></span>
-      </div>
-      <button class="add-to-cart-btn" onclick="finalizarPedido()">
-        Finalizar no WhatsApp
-      </button>
-    </div>
 
   </div>
 </div>
@@ -705,7 +708,9 @@ function finalizarPedido() {
       i.style.display = i.innerText.toLowerCase().includes(v) ? 'flex' : 'none'
     );
   };
-}   
+}
+
+    
   </script>
 </body>
 </html>
